@@ -1,0 +1,14 @@
+:root {
+  --color-background-page: rgb(255, 250, 243);     
+  --color-background-header: rgb(210, 96, 60);       
+  --color-text: rgb(59, 47, 47);                      
+  --color-text-inverted: rgb(255, 255, 255);         
+
+  --color-text-heading: rgb(140, 76, 47);            
+  --color-link: rgb(184, 92, 56);                    
+
+  --color-sidebar-background: rgb(254, 246, 230);    
+  --color-sidebar-border: rgb(230, 200, 166);        
+
+  --color-input-border: var(--color-link);
+}

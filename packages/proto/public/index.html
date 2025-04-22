@@ -3,45 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <title>Cooking Assistant</title>
+  <link rel="stylesheet" href="/styles/page.css" />
+  <link rel="stylesheet" href="/styles/tokens.css">
+
 </head>
 <body>
-
-  <div id="sidebar">
-    <h2>History</h2>
-    <ul>
-      <li><a href="history_record.html">Tomato + Egg</a></li>
-      <li><a href="history_record.html">Chicken + Mushroom</a></li>
-      <li><a href="history_record.html">Beef + Broccoli</a></li>
-    </ul>
-  </div>
-
-  <div id="main">
-    <div id="ingredients-input">
-      <h1>Enter Ingredients</h1>
-      <input type="text" placeholder="e.g., chicken, tomato">
-      <p><a href="query.html">Submit Ingredients</a></p>
+  <header>
+    <h1>Cooking Assistant</h1>
+  </header>
+  <div id="layout">
+    <div id="sidebar">
+      <h2>History</h2>
+      <ul>
+        <li><a href="history_record.html">Tomato + Egg</a></li>
+        <li><a href="history_record.html">Chicken + Mushroom</a></li>
+        <li><a href="history_record.html">Beef + Broccoli</a></li>
+      </ul>
     </div>
 
-    <div id="recipe-suggestion">
-      <h2>Suggested Recipe</h2>
-      <p>Recipe will appear here after search.</p>
-    </div>
+    <div id="main">
+      <div id="ingredients-input">
+        <h1>Enter Ingredients</h1>
+        <input type="text" placeholder="e.g., chicken, tomato">
+        <p><a href="query.html">Submit Ingredients</a></p>
+      </div>
 
-    <div id="recipe-steps">
-      <h2>Recipe Steps</h2>
-      <ol>
-        <li>Wash and chop ingredients.</li>
-        <li>Heat oil in a pan.</li>
-        <li>Add ingredients and stir-fry.</li>
-        <li>Season to taste and serve hot.</li>
-      </ol>
-    </div>
+      <div id="recipe-suggestion">
+        <h2>Suggested Recipe</h2>
+        <p>Recipe will appear here after search.</p>
+      </div>
 
-    <div id="bottom">
-      <h2>Feedback</h2>
-      <label for="rating">Rate this recipe:</label>
-      <input type="range" id="rating" name="rating" min="1" max="5" step="1">
-      <span>3/5</span>
+      <div id="recipe-steps">
+        <h2>Recipe Steps</h2>
+        <ol>
+          <li>Wash and chop ingredients.</li>
+          <li>Heat oil in a pan.</li>
+          <li>Add ingredients and stir-fry.</li>
+          <li>Season to taste and serve hot.</li>
+        </ol>
+      </div>
+
+      <div id="bottom">
+        <h2>Feedback</h2>
+        <label for="rating">Rate this recipe:</label>
+        <input type="range" id="rating" name="rating" min="1" max="5" step="1">
+        <span>3/5</span>
+      </div>
     </div>
   </div>
 

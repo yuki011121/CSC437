@@ -5,12 +5,28 @@
   <title>Cooking Assistant</title>
   <link rel="stylesheet" href="/styles/page.css" />
   <link rel="stylesheet" href="/styles/tokens.css">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poetsen+One&display=swap" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poetsen+One&family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header>
-    <h1>Cooking Assistant</h1>
+    <div class="title-with-icon">
+      <h1>Cooking Assistant</h1>
+      <svg class="icon">
+        <use href="/icons/food.svg#icon-bell" />
+      </svg>
+    </div>
   </header>
+  <!-- <header>
+    <svg class="icon">
+      <use href="/icons/food.svg#icon-bell" />
+    </svg>
+    <h1>Cooking Assistant</h1>
+  </header> -->
   <div id="layout">
     <div id="sidebar">
       <h2>History</h2>
@@ -23,8 +39,22 @@
 
     <div id="main">
       <div id="ingredients-input">
-        <h1>Enter Ingredients</h1>
-        <input type="text" placeholder="e.g., chicken, tomato">
+        
+        <!-- <h1>Enter Ingredients
+          <svg class="icon">
+            <use href="/icons/food.svg#icon-fork" />
+          </svg>
+        </h1> -->
+        <div class="section-title-with-icon">
+          <h1>Enter Ingredients</h1>
+          <svg class="icon-small">
+            <use href="/icons/food.svg#icon-fork" />
+          </svg>
+        </div>
+        <div class="input-row">
+          <input type="text" placeholder="e.g., chicken, tomato">
+        </div>
+        <!-- <input type="text" placeholder="e.g., chicken, tomato"> -->
         <p><a href="query.html">Submit Ingredients</a></p>
       </div>
 

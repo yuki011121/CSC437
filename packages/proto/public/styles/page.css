@@ -13,6 +13,7 @@ header {
   color: var(--color-text-inverted);
   padding: 1.5rem 2rem;
   text-align: center;
+  font-family: 'Poetsen One', sans-serif;
   font-size: 2rem;
   font-weight: bold;
 }
@@ -39,6 +40,8 @@ header {
 
 h1, h2 {
   color: var(--color-text-heading);
+  font-family: "Rowdies", sans-serif;
+  /* font-family: 'Lilita One', sans-serif; */
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -67,4 +70,48 @@ ingredients-input {
 
 recipe-suggestion, #recipe-steps, #bottom {
   margin-top: 1.5rem;
+}
+
+/* svg.icon {
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-right: 0.4em;
+} */
+
+.title-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* 图标与文字间距 */
+}
+
+.title-with-icon .icon {
+  height: 2em;
+  width: 2em;
+  fill: currentColor;
+}
+
+.section-title-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.icon-small {
+  height: 2em;
+  width: 2em;
+  vertical-align: middle;
+  fill: currentColor;
+}
+.input-row {
+  margin-bottom: 1rem;
+}
+.input-row input {
+  display: block;
+  width: 70%;
+  max-width: 400px;
 }

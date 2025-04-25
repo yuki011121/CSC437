@@ -6,5 +6,5 @@ push:
 cd ~/path/to/CSC437 
 git status
 git add .
-git commit -m "Lab 3—CSS Colors and Design Tokens: added theme colors and unified layout"
+git commit -m "Lab 4—Typography and Icons"
 git push origin main

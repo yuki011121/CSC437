@@ -21,6 +21,10 @@
         <use href="/icons/food.svg#icon-bell" />
       </svg>
     </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="dark-mode-toggle" autocomplete="off">
+      <span class="slider"></span>
+    </label>
   </header>
   <!-- <header>
     <svg class="icon">
@@ -84,4 +88,24 @@
   </div>
 
 </body>
+
+<script type="module">
+  const label = document.getElementById("dark-mode-toggle");
+
+  label.onchange = (event) => {
+    const checked = event.target.checked;
+
+    const customEvent = new CustomEvent("darkmode:toggle", {
+      bubbles: true,
+      detail: { checked },
+    });
+
+    event.stopPropagation();
+    label.dispatchEvent(customEvent);
+  };
+
+  document.body.addEventListener("darkmode:toggle", (event) => {
+    document.body.classList.toggle("dark-mode", event.detail.checked);
+  });
+</script>
 </html>

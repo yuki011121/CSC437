@@ -44,9 +44,10 @@
     <div id="sidebar">
       <h2>History</h2>
       <ul>
-        <cook-history-item href="history_record.html">Tomato + Egg</cook-history-item> 
+        <!-- <cook-history-item href="history_record.html">Tomato + Egg</cook-history-item> 
         <cook-history-item href="history_record.html">Chicken + Mushroom</cook-history-item> 
-        <cook-history-item href="history_record.html">Beef + Broccoli</cook-history-item> 
+        <cook-history-item href="history_record.html">Beef + Broccoli</cook-history-item>  -->
+        <cook-history-list src="/data/history.json"></cook-history-list> 
       </ul>
     </div>
 
@@ -107,6 +108,7 @@
   import { define } from "@calpoly/mustang";
   import { HistoryItemElement } from "/src/history-item.js"; 
   import { CookStepElement } from "/src/cook-step.js";
+  import { HistoryListElement } from "/src/history-list.js"; 
 
   document.addEventListener('DOMContentLoaded', (event) => { 
 
@@ -128,7 +130,6 @@
     }
 
     document.body.addEventListener("darkmode:toggle", (event) => {
-      // 确认 event.detail 是否存在并且有 checked 属性
       if (event.detail && typeof event.detail.checked !== 'undefined') {
         document.body.classList.toggle("dark-mode", event.detail.checked);
       } else {
@@ -139,7 +140,8 @@
   }); 
   define({ 
   "cook-history-item": HistoryItemElement,
-  "cook-step": CookStepElement // <<< 将 cook-step 添加到这里
+  "cook-step": CookStepElement,
+  "cook-history-list": HistoryListElement
 }); 
 </script>
 </html>

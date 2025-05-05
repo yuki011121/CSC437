@@ -15,11 +15,11 @@
 }
 
 body.dark-mode {
-  --color-background-page: rgb(95, 78, 69);           /* 深棕色背景 */
-  --color-text: rgb(239, 216, 204);                      /* 温暖米白色字体 */
-  --color-sidebar-background: rgb(112, 85, 74);        /* 深一点的棕色侧边栏 */
+  --color-background-page: rgb(95, 78, 69);        
+  --color-text: rgb(239, 216, 204);                   
+  --color-sidebar-background: rgb(112, 85, 74);       
   --color-sidebar-border: rgb(94, 67, 53);
-  --color-background-header: rgb(75, 46, 42);         /* 深红棕色 header */
-  --color-link: rgb(247, 170, 125);                      /* 柔和橘色链接 */
+  --color-background-header: rgb(228, 133, 122);        
+  --color-link: rgb(247, 170, 125);                     
 }
 

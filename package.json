@@ -15,9 +15,12 @@
   "bugs": {
     "url": "https://github.com/yuki011121/CSC437/issues"
   },
-  "homepage": "https://github.com/yuki011121/CSC437#readme"
-  ,
+  "homepage": "https://github.com/yuki011121/CSC437#readme",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "mongoose": "^8.14.3"
+  }
 }

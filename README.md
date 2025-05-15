@@ -7,5 +7,5 @@ push:
 cd ~/path/to/CSC437 
 git status
 git add .
-git commit -m "Lab 7. Dark Mode Switch"
+git commit -m "Lab 9. Client-side Rendering"
 git push origin main

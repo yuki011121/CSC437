@@ -1,8 +1,8 @@
 // packages/proto/src/cook-header.ts
 import { html, css, LitElement } from "lit";
-import { state } from "lit/decorators.js"; // @property 可能不需要，除非从外部传入配置
+import { state } from "lit/decorators.js"; 
 import { Observer, Auth, Events } from "@calpoly/mustang";
-import resetStyles from "./styles/reset.css.js"; // 你的 reset 样式
+import resetStyles from "./styles/reset.css.js"; 
 
 export class CookHeaderElement extends LitElement {
   private _authObserver = new Observer<Auth.Model>(this, "cooking:auth");
@@ -14,7 +14,7 @@ export class CookHeaderElement extends LitElement {
   private _userid?: string;
 
   @state()
-  private _isDarkMode = false; // 初始状态可以从localStorage读取
+  private _isDarkMode = false; 
 
   override connectedCallback() {
     super.connectedCallback();
@@ -24,22 +24,14 @@ export class CookHeaderElement extends LitElement {
       this._userid = user?.username;
     });
 
-    // 初始化暗色模式状态
-    // const storedDarkMode = localStorage.getItem('cookingAssistantDarkMode') === 'true';
-    // this._isDarkMode = storedDarkMode;
-    // document.body.classList.toggle("dark-mode", this._isDarkMode);
-    // // 如果希望组件内部的切换器与全局状态同步，需要一种方式来监听全局变化或从外部传入状态
   }
 
   private _handleDarkModeToggle(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     this._isDarkMode = checkbox.checked;
-    // localStorage.setItem('cookingAssistantDarkMode', String(this._isDarkMode));
-
-    // 分发全局事件，让 index.html 中的监听器处理 body class 的切换
     const darkModeEvent = new CustomEvent("darkmode:toggle", {
-      bubbles: true, // 允许事件冒泡
-      composed: true, // 允许事件穿透 Shadow DOM 边界
+      bubbles: true, 
+      composed: true, 
       detail: { checked: this._isDarkMode }
     });
     this.dispatchEvent(darkModeEvent);
@@ -97,7 +89,7 @@ export class CookHeaderElement extends LitElement {
   static override styles = [
     resetStyles,
     css`
-      /* 你 cook-header.js 中已有的样式，包括 header, .title-with-icon, .icon, .auth-controls 等 */
+    
       header {
         display: flex;
         align-items: center;
@@ -109,14 +101,14 @@ export class CookHeaderElement extends LitElement {
       }
 
       .left-space {
-        flex: 1;  /* 左占位 */
+        flex: 1;  
       }
       .title-with-icon {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        flex: 2;   /* 中间部分占更宽 */
+        flex: 2;   
         text-align: center;
       }
       .title-with-icon h1 {
@@ -134,7 +126,7 @@ export class CookHeaderElement extends LitElement {
         display: flex;
         align-items: center;
         gap: 1.5em;
-        flex: 1;  /* 右占位 */
+        flex: 1; 
         justify-content: flex-end;
       }
       .auth-controls {
@@ -157,8 +149,7 @@ export class CookHeaderElement extends LitElement {
       .auth-link:hover, .auth-button:hover {
         opacity: 0.8;
       }
-
-      /* 暗色模式切换器的 CSS (从你的 page.css 或 tokens.css 借鉴/复制) */
+/
       .toggle-switch {
         position: relative;
         display: inline-block;
@@ -174,7 +165,7 @@ export class CookHeaderElement extends LitElement {
         position: absolute;
         cursor: pointer;
         inset: 0;
-        background-color: #ccc; /* 确保这个颜色在暗色模式下也合适或用变量 */
+        background-color: #ccc; 
         border-radius: 34px;
         transition: background-color 0.3s;
       }
@@ -190,7 +181,7 @@ export class CookHeaderElement extends LitElement {
         transition: transform 0.3s;
       }
       .toggle-switch input:checked + .slider {
-        background-color: var(--color-link); /* 使用你的主题链接色 */
+        background-color: var(--color-link); 
       }
       .toggle-switch input:checked + .slider::before {
         transform: translateX(22px);

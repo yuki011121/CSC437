@@ -14,7 +14,9 @@
 </head>
 
 <body>
-  <header>
+  <mu-auth provides="cooking:auth">
+    <cook-header></cook-header>
+  <!-- <header>
     <div class="title-with-icon">
       <h1>Cooking Assistant</h1>
       <svg class="icon">
@@ -25,13 +27,8 @@
       <input type="checkbox" id="dark-mode-toggle" autocomplete="off">
       <span class="slider"></span>
     </label>
-  </header>
-  <!-- <header>
-    <svg class="icon">
-      <use href="/icons/food.svg#icon-bell" />
-    </svg>
-    <h1>Cooking Assistant</h1>
   </header> -->
+
   <div id="layout">
     <!-- <div id="sidebar">
       <h2>History</h2>
@@ -101,14 +98,15 @@
       </div>
     </div>
   </div>
-
+  </mu-auth>
 </body>
 
 <script type="module">
-  import { define } from "@calpoly/mustang";
+  import { define, Auth } from "@calpoly/mustang";
   import { HistoryItemElement } from "/src/history-item.js"; 
   import { CookStepElement } from "/src/cook-step.js";
   import { HistoryListElement } from "/src/history-list.js"; 
+  import { CookHeaderElement } from "/src/cook-header.ts";
 
   document.addEventListener('DOMContentLoaded', (event) => { 
 
@@ -141,7 +139,9 @@
   define({ 
   "cook-history-item": HistoryItemElement,
   "cook-step": CookStepElement,
-  "cook-history-list": HistoryListElement
+  "cook-history-list": HistoryListElement,
+  "cook-header":        CookHeaderElement, 
+  "mu-auth":            Auth.Provider
 }); 
 </script>
 </html>

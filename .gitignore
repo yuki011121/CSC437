@@ -3,3 +3,5 @@ node_modules/
 dist/
 packages/server/.env 
 node_modules/.package-lock.json
+node_modules/.package-lock.json
+package-lock.json 

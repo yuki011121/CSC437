@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Login - Cooking Assistant</title>
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/page.css"> 
+  <script type="module">
+    import { define, Auth } from "@calpoly/mustang";
+    // 我们稍后会创建这个 LoginFormElement
+    import { LoginFormElement } from "/src/auth/login-form.js"; // 注意路径和 .js 后缀
+
+    define({
+      "mu-auth": Auth.Provider, // @calpoly/mustang 提供的认证组件
+      "login-form": LoginFormElement // 我们将要创建的登录表单组件
+    });
+  </script>
+</head>
+<body class="page"> <mu-auth> <main class="card" style="max-width: 400px; margin: 40px auto; padding: 20px;"> <h2>User Login</h2>
+      <!-- <login-form api="/auth/login" redirect="/"> <label> -->
+      <login-form api="http://localhost:3000/auth/login" redirect="/">
+        <span>Username:</span>
+          <input name="username" autocomplete="off" />
+        </label>
+        <label>
+          <span>Password:</span>
+          <input type="password" name="password" />
+        </label>
+        </login-form>
+      <p style="text-align: center; margin-top: 20px;">
+        Or did you want to
+        <a href="#newuser">Sign up as a new user</a>?
+      </p>
+    </main>
+  </mu-auth>
+</body>
+</html>

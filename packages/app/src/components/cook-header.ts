@@ -2,7 +2,7 @@
 import { html, css, LitElement } from "lit";
 import { state } from "lit/decorators.js"; 
 import { Observer, Auth, Events } from "@calpoly/mustang";
-import resetStyles from "./styles/reset.css.js"; 
+import resetStyles from "../styles/reset.css.js";
 
 export class CookHeaderElement extends LitElement {
   private _authObserver = new Observer<Auth.Model>(this, "cooking:auth");
@@ -34,12 +34,24 @@ export class CookHeaderElement extends LitElement {
       composed: true, 
       detail: { checked: this._isDarkMode }
     });
+    console.log('Dark mode toggle in header: dispatching event, checked:', this._isDarkMode);
     this.dispatchEvent(darkModeEvent);
+  }
+  private _handleSignInClick(event: Event) {
+    event.preventDefault(); 
+    window.location.assign('/login.html'); 
   }
 
   private _renderSignInButton() {
-    return html`<a href="/login.html" target="_self" class="auth-link">Sign In</a>`;
+    return html`
+      <a href="/login.html" @click=${this._handleSignInClick} class="auth-link">
+        Sign In
+      </a>
+    `;
   }
+  // private _renderSignInButton() {
+  //   return html`<a href="/login.html" class="auth-link">Sign In</a>`;
+  // }
 
   private _renderSignOutButton() {
     return html`
@@ -149,7 +161,7 @@ export class CookHeaderElement extends LitElement {
       .auth-link:hover, .auth-button:hover {
         opacity: 0.8;
       }
-/
+
       .toggle-switch {
         position: relative;
         display: inline-block;

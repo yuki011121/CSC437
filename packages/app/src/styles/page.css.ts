@@ -1,0 +1,227 @@
+import { css } from "lit";
+export default css`
+  body {
+    background-color: var(--color-background-page);
+    color: var(--color-text);
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* display: flex;
+    min-height: 100vh; */
+  }
+
+  header {
+    display: flex;
+    justify-content: center;
+    /* justify-content: space-between;
+    align-items: center; */
+    background-color: var(--color-background-header);
+    color: var(--color-text-inverted);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-family: 'Poetsen One', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  #layout {
+    display: flex;
+    min-height: calc(100vh - 100px); 
+  }
+
+
+  #sidebar {
+    background-color: var(--color-sidebar-background);
+    border-right: 2px solid var(--color-sidebar-border);
+    padding: 2rem;
+    min-height: 100vh;
+    width: 250px;
+    box-sizing: border-box;
+  }
+
+  #main {
+    flex: 1;
+    padding: 2rem 3rem;
+  }
+
+  h1, h2 {
+    color: var(--color-text-heading);
+    font-family: "Rowdies", sans-serif;
+    /* font-family: 'Lilita One', sans-serif; */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  #ingredients-input {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  #ingredients-input input {
+    border: 1px solid var(--color-input-border);
+    padding: 8px;
+    border-radius: 4px;
+    width: 70%;
+    max-width: 400px;
+    display: inline-block;
+  }
+
+
+  /* ingredients-input input {
+    border: 1px solid var(--color-input-border);
+    padding: 8px;
+    border-radius: 4px;
+    width: 70%;
+    margin-top: 0.5rem;
+  }
+
+
+  ingredients-input {
+    margin-bottom: 2rem;
+  } */
+  #recipe-steps ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding-left: 1.5rem;
+  }
+  /* #recipe-steps ol {
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding-left: 1.5rem; 
+  } */
+
+  recipe-suggestion, #recipe-steps, #bottom {
+    margin-top: 1.5rem;
+  }
+
+
+  /* svg.icon {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-right: 0.4em;
+  } */
+
+  .title-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* 图标与文字间距 */
+  }
+
+  .title-with-icon .icon {
+    height: 2em;
+    width: 2em;
+    fill: currentColor;
+  }
+  .section-title-with-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  /* .section-title-with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  } */
+
+  .icon-small {
+    height: 2em;
+    width: 2em;
+    vertical-align: middle;
+    fill: currentColor;
+  }
+
+  .input-row {
+    margin-bottom: 1rem;
+  }
+
+  .input-row input {
+    display: block;
+    width: 70%;
+    max-width: 400px;
+  }
+
+  @media (max-width: 768px) {
+    #layout {
+      flex-direction: column;
+    }
+
+    #sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--color-sidebar-border);
+    }
+
+    #main {
+      padding: 1rem;
+    }
+
+    header {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .title-with-icon {
+      justify-content: center;
+    }
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: background-color 0.3s;
+  }
+
+  .slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    top: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  .toggle-switch input:checked + .slider {
+    background-color: var(--color-link);
+  }
+
+  .toggle-switch input:checked + .slider::before {
+    transform: translateX(22px);
+  }
+`

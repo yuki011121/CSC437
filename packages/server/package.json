@@ -6,6 +6,7 @@
     "dev": "nodemon",
     "build": "npx etsc",
     "start": "npm run build && npm run start:node",
+    "start:app": "cross-env STATIC=../app/dist npm run start",
     "start:node": "node dist/index.js",
     "start:proto": "cross-env STATIC=../proto/public npm run start",
     "check": "tsc --noEmit"
@@ -15,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.17",

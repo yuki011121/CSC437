@@ -5,3 +5,6 @@ packages/server/.env
 node_modules/.package-lock.json
 node_modules/.package-lock.json
 package-lock.json 
+packages/proto/node_modules/
+packages/*/node_modules/
+node_modules/.package-lock.json

@@ -18,3 +18,8 @@ git status
 git add .
 git commit -m "Deploy to VPS after Lab 15"
 git push origin main
+
+ps aux | grep 'node.*dist/index.js'
+kill <PID>
+cd packages/server
+nohup npm run start:app &

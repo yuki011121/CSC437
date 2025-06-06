@@ -24,7 +24,7 @@ export class HistoryViewElement extends LitElement {
     resetStyles,
     css`
       .content-wrapper {
-        padding: 2em; /* 增加内边距 */
+        padding: 2em; 
         text-align: center;
       }
       h2 {

@@ -89,8 +89,8 @@ export class HistoryListElement extends View<Model, Msg> {
     .edit-link {
       margin-left: 1em;
       padding: 0.2em 0.6em;
-      border: 1px solid var(--color-link); /* 使用你的主题链接色 */
-      color: var(--color-link); /* 使用你的主题链接色 */
+      border: 1px solid var(--color-link);
+      color: var(--color-link); 
       text-decoration: none;
       border-radius: 4px;
       font-size: 0.8em;

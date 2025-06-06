@@ -17,12 +17,10 @@ export interface Model {
   historyItems?: HistoryItem[]; 
   isLoadingHistory?: boolean;
   historyError?: string;
-  currentHistoryItem?: HistoryItem;         // 当前正在编辑或查看的单个历史项
-  isLoadingCurrentHistoryItem?: boolean;  // 是否正在加载单个历史项
-  currentHistoryItemError?: string;       // 加载或保存单个历史项时的错误信息
+  currentHistoryItem?: HistoryItem;        
+  isLoadingCurrentHistoryItem?: boolean;  
+  currentHistoryItemError?: string;      
 
-  // currentRecipe?: Recipe;
-  // userProfile?: UserProfile;
   generatedRecipe?: Recipe;
   isGeneratingRecipe?: boolean;
   recipeGenerationError?: string;

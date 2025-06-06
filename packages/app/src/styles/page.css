@@ -117,7 +117,7 @@ recipe-suggestion, #recipe-steps, #bottom {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem; /* 图标与文字间距 */
+  gap: 0.5rem; 
 }
 
 .title-with-icon .icon {

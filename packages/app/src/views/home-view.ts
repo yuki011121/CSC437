@@ -27,10 +27,10 @@ export class HomeViewElement extends View<Model, Msg> {
   }
 
   @state()
-  private _currentRatingValue: number = 3; // 滑块的实时值，默认为3
+  private _currentRatingValue: number = 3;
 
   @state()
-  private _ratingSubmitted: boolean = false; // 标记评分是否已提交
+  private _ratingSubmitted: boolean = false; 
 
   constructor() {
     super("cooking:model");
@@ -38,9 +38,7 @@ export class HomeViewElement extends View<Model, Msg> {
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
-    // 检查是不是生成了一个新的菜谱
     if (changedProperties.has('_recipe') && changedProperties.get('_recipe') !== this._recipe) {
-      // 重置评分UI的状态
       this._currentRatingValue = 3;
       this._ratingSubmitted = false;
     }
@@ -64,7 +62,6 @@ export class HomeViewElement extends View<Model, Msg> {
     this._currentRatingValue = Number(slider.value);
   }
 
-  // 当点击 "Submit Rating" 按钮时
   private _submitRating() {
     if (!this._recipe || !this._recipe._id) {
       console.error("Cannot submit rating: No generated recipe with an ID is available.");
@@ -72,13 +69,11 @@ export class HomeViewElement extends View<Model, Msg> {
     }
 
     console.log(`Submitting rating: ${this._currentRatingValue} for recipe ID: ${this._recipe._id}`);
-    // 分发消息给 store，请求保存评分
     this.dispatchMessage([
       "recipe/rate", 
       { recipeId: this._recipe._id, rating: this._currentRatingValue }
     ]);
 
-    // 标记为已提交，以便在UI上给用户反馈
     this._ratingSubmitted = true;
   }
 
@@ -119,7 +114,7 @@ export class HomeViewElement extends View<Model, Msg> {
             : this._recipe
               ? html`
                   <div class="recipe-card">
-                    ${this._recipe.imageUrl // <<< 新增：如果图片URL存在，则显示图片
+                    ${this._recipe.imageUrl 
                       ? html`<img class="recipe-image"
 +       src="${this._recipe.imageUrl}"
 +      alt="${this._recipe.name}" />`
@@ -148,7 +143,7 @@ export class HomeViewElement extends View<Model, Msg> {
 
       <div id="bottom">
         <h2>Feedback</h2>
-        ${this._recipe //只有当有菜谱时才显示评分区域
+        ${this._recipe 
           ? html`
             <label for="rating-home">Rate this recipe:</label>
             <div class="rating-control">
@@ -192,10 +187,9 @@ export class HomeViewElement extends View<Model, Msg> {
         margin-bottom: 0.5rem;
       }
       h3 {
-        font-size: 1.2em; /* 可以给 h3 单独设置大小 */
+        font-size: 1.2em; 
       }
 
-      /* 控制链接 */
       a {
         color: var(--color-link);
         text-decoration: none;
@@ -214,7 +208,7 @@ export class HomeViewElement extends View<Model, Msg> {
         gap: 0.4rem;
         margin-bottom: 1rem;
       }
-      .section-title-with-icon h1 { /* h1 的样式可能需要在这里覆盖 */
+      .section-title-with-icon h1 { 
          color: var(--color-text-heading);
          font-family: "Rowdies", sans-serif;
          font-weight: 600;
@@ -248,8 +242,8 @@ export class HomeViewElement extends View<Model, Msg> {
         background-color: #ccc;
       }
       #recipe-steps ol {
-        padding-left: 0; /* 我们用 grid，可以去掉默认的 ol padding */
-        list-style: none; /* 去掉默认的数字 */
+        padding-left: 0; 
+        list-style: none; 
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
@@ -258,18 +252,11 @@ export class HomeViewElement extends View<Model, Msg> {
         margin-top: 1.5rem;
       }
       .recipe-image {
-        // width: 100%;
-        // // max-height: 300px;
-        // // object-fit: cover; /* 保持图片比例，裁剪多余部分 */
-        // height: auto; 
-        // object-fit: contain;
-        // border-radius: 8px; /* 圆角 */
-        // margin-bottom: 1em;
           max-width: 100%;
           max-height: 300px;
-          object-fit: contain;   /* 显示整张图 */
+          object-fit: contain;  
           display: block;
-          margin: 0 auto 1em auto; /* 居中 */
+          margin: 0 auto 1em auto; 
           border-radius: 8px;
       }
       .recipe-card {
@@ -289,7 +276,7 @@ export class HomeViewElement extends View<Model, Msg> {
         font-weight: bold;
         font-size: 1.2em;
         color: var(--color-text-heading);
-        min-width: 40px; /* 防止数字变化时布局跳动 */
+        min-width: 40px; 
         text-align: center;
       }
       .submit-rating-button {

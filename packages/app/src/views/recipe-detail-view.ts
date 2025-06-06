@@ -117,10 +117,10 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
       }
       .back-link-container {
         text-align: center;
-        margin-top: 2em; /* 增加与上方内容的间距 */
+        margin-top: 2em;
       }
       .back-link {
-        display: inline-block; /* 让 padding 生效 */
+        display: inline-block; 
         padding: 0.5em 1.5em;
         border: 1px solid var(--color-link);
         color: var(--color-link);
@@ -136,7 +136,7 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
       .page-edit-item {
         padding: 1em;
       }
-      #bottom p { /* 给评分文本一些样式 */
+      #bottom p {
         font-size: 1.1em;
       }
       #bottom strong {

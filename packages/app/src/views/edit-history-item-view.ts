@@ -174,12 +174,12 @@ export class EditHistoryItemViewElement extends View<Model, Msg> {
       }
 
       .back-link {
-        color: var(--color-text); /* 使用普通文本颜色 */
+        color: var(--color-text); 
         text-decoration: underline;
         font-size: 0.9em;
       }
       .back-link:hover {
-        color: var(--color-link); /* 悬停时使用主题链接色 */
+        color: var(--color-link); 
       }
       .error-message {
         color: var(--color-error-text, red);

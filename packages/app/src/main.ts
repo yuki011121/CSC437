@@ -43,7 +43,6 @@ const routes = [
   // },
   {
     path: "/app/recipe/:id",
-    /** ⬇ 用真正的组件，而不是占位 h2 ⬇ */
     view: (params: Switch.Params) => html`
       <recipe-detail-view recipe-id=${params.id}></recipe-detail-view>
     `
@@ -53,17 +52,16 @@ const routes = [
     view: () => html`<p>Redirecting to login page...</p>`, 
   },
     {
-    path: "/app/history/:id/edit", // <<< 新增：编辑历史记录项的路由
+    path: "/app/history/:id/edit", 
     view: (params: Switch.Params) => html`
       <edit-history-item-view history-item-id="${params.id}"></edit-history-item-view>
     `
-    // 我们将把 history-item-id 作为属性传递给视图组件
   },
   {
     path: "/app/recipe/:id",
     view: (params: Switch.Params) => html`
       <recipe-detail-view recipe-id="${params.id}"></recipe-detail-view>
-    ` // <<< 修改这里
+    ` 
   },
   {
     path: "(.*)",

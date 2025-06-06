@@ -14,6 +14,8 @@ import { HomeViewElement } from "./views/home-view.js";
 import "./views/history-view.js"; 
 import "./views/edit-history-item-view.js"; 
 import "./views/recipe-detail-view.js";
+// import "./views/recipe-detail-view.js";
+import { RecipeDetailViewElement } from "./views/recipe-detail-view.js";
 
 const routes = [
   {
@@ -31,12 +33,19 @@ const routes = [
     view: () => html`<history-view></history-view>`
 
   },
+  // {
+  //   path: "/app/recipe/:id", 
+  //   view: (params: Switch.Params) => html` 
+  //     <h2>Recipe Details</h2>
+  //     <p>Details for recipe ID: ${params.id}</p> 
+  //     <p><a href="/app">Back to Home</a></p>
+  //   `
+  // },
   {
-    path: "/app/recipe/:id", 
-    view: (params: Switch.Params) => html` 
-      <h2>Recipe Details</h2>
-      <p>Details for recipe ID: ${params.id}</p> 
-      <p><a href="/app">Back to Home</a></p>
+    path: "/app/recipe/:id",
+    /** ⬇ 用真正的组件，而不是占位 h2 ⬇ */
+    view: (params: Switch.Params) => html`
+      <recipe-detail-view recipe-id=${params.id}></recipe-detail-view>
     `
   },
   {
@@ -84,7 +93,9 @@ define({
   "cook-step": CookStepElement,                  
   "history-item": HistoryItemElement,       
   "history-list": HistoryListElement,
+  "recipe-detail-view": RecipeDetailViewElement,
   "home-view": HomeViewElement
+  
  
 });
 

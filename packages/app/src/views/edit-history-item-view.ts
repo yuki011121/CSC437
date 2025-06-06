@@ -112,6 +112,9 @@ export class EditHistoryItemViewElement extends View<Model, Msg> {
           </label>
           <button type="submit">Save Changes</button>
         </mu-form>
+        <p class="back-link-container">
+          <a href="/app" class="back-link">Back to Home</a>
+        </p>
       </main>
     `;
   }
@@ -164,6 +167,19 @@ export class EditHistoryItemViewElement extends View<Model, Msg> {
       }
       button[type="submit"]:hover {
         opacity: 0.9;
+      }
+      .back-link-container {
+        text-align: center;
+        margin-top: 1.5em;
+      }
+
+      .back-link {
+        color: var(--color-text); /* 使用普通文本颜色 */
+        text-decoration: underline;
+        font-size: 0.9em;
+      }
+      .back-link:hover {
+        color: var(--color-link); /* 悬停时使用主题链接色 */
       }
       .error-message {
         color: var(--color-error-text, red);

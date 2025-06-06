@@ -67,7 +67,9 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
           ${this._recipe.steps.map((step) => html`<li>${step}</li>`)}
         </ol>
 
-        <p><a href="/app/history">Back to History</a></p>
+        <p class="back-link-container">
+          <a href="/app/history" class="back-link">Back to History</a>
+        </p>
       </article>
     `;
   }
@@ -98,7 +100,24 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
         font-style: italic;
         margin-bottom: 1em;
       }
-
+      .back-link-container {
+        text-align: center;
+        margin-top: 2em; /* 增加与上方内容的间距 */
+      }
+      .back-link {
+        display: inline-block; /* 让 padding 生效 */
+        padding: 0.5em 1.5em;
+        border: 1px solid var(--color-link);
+        color: var(--color-link);
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.2s, color 0.2s;
+      }
+      .back-link:hover {
+        background-color: var(--color-link);
+        color: var(--color-text-inverted);
+      }
       .error-message {
         color: var(--color-error-text, red);
       }

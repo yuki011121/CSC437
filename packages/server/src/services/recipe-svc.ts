@@ -5,6 +5,7 @@ import { Recipe } from "../models/recipe";
 const RecipeSchema = new Schema<Recipe>({
   name: { type: String, required: true, trim: true },
   description: { type: String, trim: true },
+  imageUrl: { type: String, trim: true },
   ingredientsUsed: [{ type: String, trim: true }],
   steps: [{ type: String, trim: true }]
 }, { collection: "recipes" });

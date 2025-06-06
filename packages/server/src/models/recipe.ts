@@ -4,6 +4,7 @@ export interface Recipe {
   name: string;
   description?: string;
   ingredientsUsed: string[];
+  imageUrl?: string; 
   steps: string[];
   // 之后还可以添加创建时间、评分等
 }

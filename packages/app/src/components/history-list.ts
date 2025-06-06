@@ -70,5 +70,36 @@ export class HistoryListElement extends View<Model, Msg> {
       color: var(--color-error-text, red);
       padding: 0.5em 0;
     }
+    .history-item-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4em 0;
+      border-bottom: 1px solid var(--color-sidebar-border);
+    }
+    .history-item-entry:last-child {
+      border-bottom: none;
+    }
+
+    /* history-item 组件会渲染它自己的内容，我们让它占据主要空间 */
+    history-item {
+      flex-grow: 1; 
+    }
+
+    .edit-link {
+      margin-left: 1em;
+      padding: 0.2em 0.6em;
+      border: 1px solid var(--color-link); /* 使用你的主题链接色 */
+      color: var(--color-link); /* 使用你的主题链接色 */
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: bold;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .edit-link:hover {
+      background-color: var(--color-link);
+      color: var(--color-text-inverted);
+    }
   `;
 }

@@ -6,8 +6,11 @@ import { HistoryItem } from "server/models"; // <<< 确保导入 HistoryItem
 
 async function loadSingleRecipe(id: string, user: Auth.User): Promise<any> {
   if (!user.authenticated) throw new Error("User not authenticated.");
-  const response = await fetch(`/api/recipes/${id}`, { headers: Auth.headers(user) });
-  if (!response.ok) throw new Error(`Failed to fetch recipe ${id}: ${response.statusText}`);
+  console.log(`UPDATE: loadSingleRecipe - Fetching /api/recipes/${id}`); // <<< 确认 API 调用
+  const response = await fetch(`/api/recipes/${id}`, { headers: Auth.headers(user) }); // 使用相对路径和认证头
+  if (!response.ok) {
+    throw new Error(`Failed to fetch recipe ${id}: Server responded with ${response.status}`);
+  }
   return response.json();
 }
 
@@ -259,7 +262,7 @@ export default function update(
         body: JSON.stringify({ ingredients })
       })
       .then(res => res.ok ? res.json() : Promise.reject(new Error(`API Error: ${res.statusText}`)))
-      .then((recipeData) => {
+      .then((recipeData: Recipe) => {
         // 1. 更新模型，显示新生成的菜谱
         apply(model => ({
           ...model,
@@ -290,12 +293,14 @@ export default function update(
       break;
     case "recipe/fetchById":
       const { id } = message[1];
-      apply(model => ({ ...model, isLoadingRecipe: true, recipeError: undefined, currentRecipe: undefined }));
-      loadSingleRecipe(id, user)
+          apply(model => ({ ...model, isLoadingRecipe: true, recipeError: undefined, currentRecipe: undefined }));
+      loadSingleRecipe(id, user) // loadSingleRecipe 是你之前创建的辅助函数
         .then(recipe => {
+          console.log("UPDATE: Successfully fetched single recipe:", recipe); // <<< 确认收到数据
           apply(model => ({ ...model, isLoadingRecipe: false, currentRecipe: recipe }));
         })
         .catch(err => {
+          console.error("UPDATE: Failed to fetch single recipe:", err); // <<< 确认是否有错误
           apply(model => ({ ...model, isLoadingRecipe: false, recipeError: err.message }));
         });
       break;

@@ -79,8 +79,15 @@ export class HomeViewElement extends View<Model, Msg> {
             ? html`<p class="error-message">Error: ${this._error}</p>`
             : this._recipe
               ? html`
-                  <h3>${this._recipe.name}</h3>
-                  <p>Based on your ingredients: ${this._recipe.ingredientsUsed.join(', ')}</p>
+                  <div class="recipe-card">
+                    ${this._recipe.imageUrl // <<< 新增：如果图片URL存在，则显示图片
+                      ? html`<img class="recipe-image"
++       src="${this._recipe.imageUrl}"
++      alt="${this._recipe.name}" />`
+                      : ''}
+                    <h3>${this._recipe.name}</h3>
+                    <p>Based on your ingredients: ${this._recipe.ingredientsUsed.join(', ')}</p>
+                  </div>
                 `
               : html`<p>Recipe will appear here after search.</p>`
         }
@@ -114,11 +121,48 @@ export class HomeViewElement extends View<Model, Msg> {
     css`
       :host {
         display: block;
-        padding: 1rem 1.5rem;
+        padding: 2rem 3rem;
       }
-      .section-title-with-icon, #ingredients-input {
+      h2, h3 {
+        color: var(--color-text-heading);
+        font-family: "Rowdies", sans-serif;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      h3 {
+        font-size: 1.2em; /* 可以给 h3 单独设置大小 */
+      }
+
+      /* 控制链接 */
+      a {
+        color: var(--color-link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      #ingredients-input {
+        margin-bottom: 2rem;
         text-align: center;
-        margin-bottom: 1.5rem;
+      }
+      .section-title-with-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        margin-bottom: 1rem;
+      }
+      .section-title-with-icon h1 { /* h1 的样式可能需要在这里覆盖 */
+         color: var(--color-text-heading);
+         font-family: "Rowdies", sans-serif;
+         font-weight: 600;
+         margin-bottom: 0.5rem;
+      }
+      .icon-small {
+        height: 2em;
+        width: 2em;
+        vertical-align: middle;
+        fill: currentColor;
       }
       .input-row input {
         padding: 8px;
@@ -142,13 +186,32 @@ export class HomeViewElement extends View<Model, Msg> {
         background-color: #ccc;
       }
       #recipe-steps ol {
-        padding-left: 1.5rem;
+        padding-left: 0; /* 我们用 grid，可以去掉默认的 ol padding */
+        list-style: none; /* 去掉默认的数字 */
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
       }
       #recipe-suggestion, #recipe-steps, #bottom {
         margin-top: 1.5rem;
+      }
+      .recipe-image {
+        // width: 100%;
+        // // max-height: 300px;
+        // // object-fit: cover; /* 保持图片比例，裁剪多余部分 */
+        // height: auto; 
+        // object-fit: contain;
+        // border-radius: 8px; /* 圆角 */
+        // margin-bottom: 1em;
+          max-width: 100%;
+          max-height: 300px;
+          object-fit: contain;   /* 显示整张图 */
+          display: block;
+          margin: 0 auto 1em auto; /* 居中 */
+          border-radius: 8px;
+      }
+      .recipe-card {
+        text-align: center;
       }
       .error-message {
         color: var(--color-error-text, red);

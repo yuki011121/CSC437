@@ -2,9 +2,13 @@
 cd packages/proto
 cd packages/server
 npm run start --workspace=proto
-cd packages/app
+
 npm run dev
+
+cd packages/app
 npm run build
+
+cd packages/server
 npm run start:app
 
 

@@ -16,5 +16,5 @@ push:
 cd ~/path/to/CSC437 
 git status
 git add .
-git commit -m "Lab 15. Forms with MVU and Messages"
+git commit -m "Deploy to VPS after Lab 15"
 git push origin main

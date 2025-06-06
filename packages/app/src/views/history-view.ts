@@ -3,16 +3,18 @@ import { LitElement, html, css } from "lit";
 import { customElement } from "lit/decorators.js";
 import resetStyles from "../styles/reset.css.js";
 
+
 @customElement("history-view")
 export class HistoryViewElement extends LitElement {
   override render() {
     return html`
       <div class="content-wrapper">
         <h2>My Cooking History</h2>
-        <p>This is where a more detailed list or view of cooking history would go.</p>
-        <p>For now, this is just a placeholder view to test routing.</p>
-        <p><a href="/app">Back to Home</a></p>
-        </div>
+
+        <history-list></history-list> 
+
+        <p style="margin-top: 2em;"><a href="/app">Back to Home</a></p>
+      </div>
     `;
   }
 
@@ -25,7 +27,7 @@ export class HistoryViewElement extends LitElement {
       h2 {
         color: var(--color-text-heading); 
         font-family: "Rowdies", sans-serif; 
-        margin-bottom: 0.5em;
+        margin-bottom: 1em; /* 增加一点标题和列表之间的间距 */
       }
     `
   ];

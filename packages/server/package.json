@@ -2,9 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "exports": {  
-  "./models": {
-    "import": "./src/models/index.ts" 
+  "exports": {
+    "./models": {
+      "import": "./src/models/index.ts"
     }
   },
   "scripts": {
@@ -32,6 +32,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",

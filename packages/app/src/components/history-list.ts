@@ -36,13 +36,23 @@ export class HistoryListElement extends View<Model, Msg> {
     }
 
     return html`
-      <ul>
-        ${this.model.historyItems.map(
-          (item: HistoryItem) => html`
-            <history-item href="${item.link}">${item.text}</history-item>
-          `
-        )}
-      </ul>
+    <ul class="history-items-list">
+      ${this.model.historyItems.map(
+        (item: HistoryItem) => html`
+          <li class="history-item-entry">
+            <history-item href="${item.link}">${item.text}</history-item> 
+
+            <a 
+              href="/app/history/${item._id}/edit" 
+              class="edit-link"
+              title="Edit ${item.text}"
+            >
+              Edit
+            </a>
+          </li>
+        `
+      )}
+    </ul>
     `;
   }
 

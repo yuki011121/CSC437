@@ -4,6 +4,7 @@ import { HistoryItem } from "../models/historyItem";
 
 const HistoryItemSchema = new Schema<HistoryItem>(
   {
+    userId: { type: String, required: true, trim: true },
     link: { type: String, required: true, trim: true },
     text: { type: String, required: true, trim: true },
   },
@@ -12,8 +13,8 @@ const HistoryItemSchema = new Schema<HistoryItem>(
 
 const HistoryItemModel = model<HistoryItem>("HistoryItem", HistoryItemSchema);
 
-function index(): Promise<HistoryItem[]> {
-  return HistoryItemModel.find().exec();
+function index(userId: string): Promise<HistoryItem[]> {
+  return HistoryItemModel.find({ userId: userId }).exec();
 }
 
 
@@ -21,9 +22,9 @@ function get(id: string): Promise<HistoryItem | null> {
   return HistoryItemModel.findById(id).exec();
 }
 
-function create(item: HistoryItem): Promise<HistoryItem> {
-  const newItem = new HistoryItemModel(item); 
-  return newItem.save(); 
+function create(item: HistoryItem): Promise<HistoryItem> { 
+  const newItem = new HistoryItemModel(item);
+  return newItem.save();
 }
 
 function update(id: string, itemData: Partial<HistoryItem>): Promise<HistoryItem | null> {

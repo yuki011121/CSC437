@@ -88,7 +88,7 @@ export function authenticateUser(
       res.status(403).send({ message: "Forbidden: Invalid or expired token." });
       return;
     }
-
+    (req as any).user = decoded;  
     next();
   });
 }

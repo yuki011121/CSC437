@@ -5,6 +5,7 @@ import path from "node:path";
 import { connect } from "./services/mongo";
 import historyItemRoutes from "./routes/historyItems";
 import authRouter, { authenticateUser } from "./routes/auth";
+import recipeRoutes from "./routes/recipeRoutes";
 import cors from "cors";
 
 const app = express();
@@ -22,6 +23,7 @@ connect("csc437cluster");
 
 app.use("/auth", authRouter);
 app.use("/api/history", authenticateUser, historyItemRoutes);
+app.use("/api/recipes", authenticateUser, recipeRoutes);
 
 app.get("/hello", (req: Request, res: Response) => {
     res.send("Hello, World");

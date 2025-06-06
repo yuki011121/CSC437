@@ -15,14 +15,21 @@
 <body>
   <mu-history provides="cooking:history">
     <mu-auth provides="cooking:auth" redirect="/login.html">
-      <div id="app-container"> <cook-header></cook-header>
-        <div id="layout">      <div id="sidebar">  <h2>History</h2>
-            <history-list></history-list> 
+
+      <mu-store provides="cooking:model"> 
+        <div id="app-container">
+          <cook-header></cook-header>
+          <div id="layout">
+            <div id="sidebar">
+              <h2>History</h2>
+              <history-list></history-list> 
+            </div>
+            <main id="main">
+              <mu-switch></mu-switch>
+            </main>
           </div>
-          <main id="main">      <mu-switch></mu-switch> </main>
         </div>
-      </div>
-    </mu-auth>
+      </mu-store> </mu-auth>
   </mu-history>
   <script type="module" src="/src/main.ts"></script> 
 </body>

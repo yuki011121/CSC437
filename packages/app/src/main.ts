@@ -1,5 +1,5 @@
 // packages/app/src/main.ts
-import { Auth, define, History, Switch } from "@calpoly/mustang";
+import { Auth, define, History, Switch, Store, Form } from "@calpoly/mustang";
 import { html } from "lit"; 
 import { CookHeaderElement } from "./components/cook-header.js"; 
 import { CookStepElement } from "./components/cook-step.js";  
@@ -8,11 +8,12 @@ import { HistoryListElement } from "./components/history-list.js";
 import { Msg } from "./messages.js";     
 import { Model, init } from "./model.js";
 import update from "./update.js";
-import { Store } from "@calpoly/mustang";
 
 import "./views/home-view.js"; 
 import { HomeViewElement } from "./views/home-view.js";
 import "./views/history-view.js"; 
+import "./views/edit-history-item-view.js"; 
+import "./views/recipe-detail-view.js";
 
 const routes = [
   {
@@ -42,6 +43,19 @@ const routes = [
     path: "/app/login", 
     view: () => html`<p>Redirecting to login page...</p>`, 
   },
+    {
+    path: "/app/history/:id/edit", // <<< 新增：编辑历史记录项的路由
+    view: (params: Switch.Params) => html`
+      <edit-history-item-view history-item-id="${params.id}"></edit-history-item-view>
+    `
+    // 我们将把 history-item-id 作为属性传递给视图组件
+  },
+  {
+    path: "/app/recipe/:id",
+    view: (params: Switch.Params) => html`
+      <recipe-detail-view recipe-id="${params.id}"></recipe-detail-view>
+    ` // <<< 修改这里
+  },
   {
     path: "(.*)",
     view: () => html`<h1>404 - Page Not Found</h1><p><a href="/app">Go Home</a></p>`
@@ -65,6 +79,7 @@ define({
   "mu-history": History.Provider, 
   "mu-switch": AppSwitch,
   "mu-store": AppStore,  
+  "mu-form": Form.Element,
   "cook-header": CookHeaderElement,  
   "cook-step": CookStepElement,                  
   "history-item": HistoryItemElement,       

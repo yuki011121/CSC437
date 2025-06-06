@@ -119,4 +119,22 @@ router.get("/:id", authenticateUser, async (req: Request, res: Response) => {
     }
 });
 
+router.put("/:id", authenticateUser, async (req: Request, res: Response) => {
+  const { id } = req.params;
+  // req.body 中可能只包含 rating，或者其他要更新的字段
+  const recipeDataToUpdate = req.body; 
+
+  try {
+    const updatedRecipe = await RecipeService.update(id, recipeDataToUpdate);
+    if (!updatedRecipe) {
+      res.status(404).send({ message: "Recipe not found for update." });
+    } else {
+      res.status(200).json(updatedRecipe);
+    }
+  } catch (error) {
+    console.error("Error updating recipe by ID:", error);
+    res.status(500).send({ message: "Failed to update recipe." });
+  }
+});
+
 export default router;

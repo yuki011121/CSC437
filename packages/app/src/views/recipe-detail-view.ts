@@ -21,6 +21,8 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
     return this.model.isLoadingRecipe || false;
   }
 
+
+
   @state()
   get _error(): string | undefined {
     return this.model.recipeError;
@@ -29,6 +31,9 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
   constructor() {
     super("cooking:model");
   }
+
+
+
 
   override attributeChangedCallback(
     name: string,
@@ -66,6 +71,16 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
         <ol class="steps-list">
           ${this._recipe.steps.map((step) => html`<li>${step}</li>`)}
         </ol>
+
+        <div id="bottom">
+          <h2>Feedback</h2>
+          <p>
+            Saved Rating: 
+            ${this._recipe.rating 
+              ? html`<strong>${this._recipe.rating}/5</strong>` 
+              : "Not yet rated."}
+          </p>
+        </div>
 
         <p class="back-link-container">
           <a href="/app/history" class="back-link">Back to History</a>
@@ -117,6 +132,15 @@ export class RecipeDetailViewElement extends View<Model, Msg> {
       .back-link:hover {
         background-color: var(--color-link);
         color: var(--color-text-inverted);
+      }
+      .page-edit-item {
+        padding: 1em;
+      }
+      #bottom p { /* 给评分文本一些样式 */
+        font-size: 1.1em;
+      }
+      #bottom strong {
+        color: var(--color-text-heading);
       }
       .error-message {
         color: var(--color-error-text, red);

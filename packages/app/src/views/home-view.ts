@@ -26,8 +26,24 @@ export class HomeViewElement extends View<Model, Msg> {
     return this.model.generatedRecipe;
   }
 
+  @state()
+  private _currentRatingValue: number = 3; // 滑块的实时值，默认为3
+
+  @state()
+  private _ratingSubmitted: boolean = false; // 标记评分是否已提交
+
   constructor() {
     super("cooking:model");
+  }
+
+  override updated(changedProperties: Map<string, any>) {
+    super.updated(changedProperties);
+    // 检查是不是生成了一个新的菜谱
+    if (changedProperties.has('_recipe') && changedProperties.get('_recipe') !== this._recipe) {
+      // 重置评分UI的状态
+      this._currentRatingValue = 3;
+      this._ratingSubmitted = false;
+    }
   }
 
   private _handleInputChange(event: Event) {
@@ -43,6 +59,29 @@ export class HomeViewElement extends View<Model, Msg> {
     const ingredients = this._ingredientsText.split(/[, ]+/).filter(Boolean);
     this.dispatchMessage(["recipe/generate", { ingredients }]);
   }
+  private _handleRatingInput(event: Event) {
+    const slider = event.target as HTMLInputElement;
+    this._currentRatingValue = Number(slider.value);
+  }
+
+  // 当点击 "Submit Rating" 按钮时
+  private _submitRating() {
+    if (!this._recipe || !this._recipe._id) {
+      console.error("Cannot submit rating: No generated recipe with an ID is available.");
+      return;
+    }
+
+    console.log(`Submitting rating: ${this._currentRatingValue} for recipe ID: ${this._recipe._id}`);
+    // 分发消息给 store，请求保存评分
+    this.dispatchMessage([
+      "recipe/rate", 
+      { recipeId: this._recipe._id, rating: this._currentRatingValue }
+    ]);
+
+    // 标记为已提交，以便在UI上给用户反馈
+    this._ratingSubmitted = true;
+  }
+
 
   override render() {
     return html`
@@ -109,9 +148,32 @@ export class HomeViewElement extends View<Model, Msg> {
 
       <div id="bottom">
         <h2>Feedback</h2>
-        <label for="rating-spa">Rate this recipe:</label>
-        <input type="range" id="rating-spa" name="rating" min="1" max="5" step="1">
-        <span>3/5</span>
+        ${this._recipe //只有当有菜谱时才显示评分区域
+          ? html`
+            <label for="rating-home">Rate this recipe:</label>
+            <div class="rating-control">
+              <input 
+                type="range" 
+                id="rating-home" 
+                min="1" 
+                max="5" 
+                step="1"
+                .value=${String(this._currentRatingValue)}
+                @input=${this._handleRatingInput}
+                ?disabled=${this._ratingSubmitted}
+              >
+              <span class="rating-value">${this._currentRatingValue}/5</span>
+              <button 
+                @click=${this._submitRating} 
+                ?disabled=${this._ratingSubmitted}
+                class="submit-rating-button"
+              >
+                ${this._ratingSubmitted ? "Submitted!" : "Submit Rating"}
+              </button>
+            </div>
+          `
+          : ''
+        }
       </div>
     `;
   }
@@ -212,6 +274,41 @@ export class HomeViewElement extends View<Model, Msg> {
       }
       .recipe-card {
         text-align: center;
+      }
+      .rating-control {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        max-width: 500px;
+        margin: auto;
+      }
+      .rating-control input[type="range"] {
+        flex-grow: 1;
+      }
+      .rating-value {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: var(--color-text-heading);
+        min-width: 40px; /* 防止数字变化时布局跳动 */
+        text-align: center;
+      }
+      .submit-rating-button {
+        padding: 0.5em 1em;
+        border: 1px solid var(--color-link);
+        color: var(--color-link);
+        background-color: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .submit-rating-button:hover:not([disabled]) {
+        background-color: var(--color-link);
+        color: var(--color-text-inverted);
+      }
+      .submit-rating-button:disabled {
+        background-color: #eee;
+        border-color: #ccc;
+        color: #999;
+        cursor: not-allowed;
       }
       .error-message {
         color: var(--color-error-text, red);

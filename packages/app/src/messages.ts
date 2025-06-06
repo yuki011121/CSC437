@@ -38,4 +38,5 @@ export type Msg =
     | ["recipe/fetchById", { id: string }]
   | ["recipe/fetched", { recipe: any }] // 使用 any 或 Recipe 接口
   | ["recipe/fetchFailed", { error: string }]
+  | ["recipe/rate", { recipeId: string; rating: number }]
 ;

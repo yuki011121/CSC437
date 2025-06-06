@@ -321,6 +321,45 @@ export default function update(
     case "recipe/fetchFailed":
       // 目前未使用，保留以备将来扩展
       break;
+    case "recipe/rate":
+      const { recipeId, rating } = message[1];
+      if (!user.authenticated) {
+        console.error("Cannot rate recipe: User not authenticated.");
+        // 可以选择性地在 model 中设置一个错误
+        break;
+      }
+
+      // 调用后端 API 更新评分
+      fetch(`/api/recipes/${recipeId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...Auth.headers(user)
+        },
+        body: JSON.stringify({ rating: rating }) // 只发送 rating 字段
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to save rating.");
+        return res.json();
+      })
+      .then((updatedRecipe) => {
+        // 成功后，用后端返回的完整菜谱数据更新 model
+        // 这样能确保前端状态与数据库完全同步
+        apply(model => ({
+          ...model,
+          // 如果当前查看的菜谱就是被评分的这个，就更新它
+          currentRecipe: model.currentRecipe?._id === updatedRecipe._id ? updatedRecipe : model.currentRecipe,
+          // 同时也可以更新主页上显示的那个（如果它们是同一个状态属性）
+          generatedRecipe: model.generatedRecipe?._id === updatedRecipe._id ? updatedRecipe : model.generatedRecipe
+        }));
+      })
+      .catch(err => {
+        console.error("Rating submission failed:", err);
+        // 可以在 model 中设置一个错误状态来通知用户
+        // apply(model => ({ ...model, recipeError: err.message }));
+      });
+      break;
+
     default:
       // 使用类型 never 进行穷尽性检查，确保所有消息都被处理
       const unhandled: never = message[0];

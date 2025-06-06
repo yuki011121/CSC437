@@ -6,6 +6,7 @@ const RecipeSchema = new Schema<Recipe>({
   name: { type: String, required: true, trim: true },
   description: { type: String, trim: true },
   imageUrl: { type: String, trim: true },
+  rating: { type: Number }, 
   ingredientsUsed: [{ type: String, trim: true }],
   steps: [{ type: String, trim: true }]
 }, { collection: "recipes" });
@@ -21,4 +22,7 @@ function get(id: string): Promise<Recipe | null> {
   return RecipeModel.findById(id).exec();
 }
 
-export default { create, get };
+function update(id: string, recipe: Partial<Recipe>): Promise<Recipe | null> {
+  return RecipeModel.findByIdAndUpdate(id, recipe, { new: true }).exec();
+}
+export default { create, get, update};

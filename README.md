@@ -1,4 +1,8 @@
 # CSC437
+docker build -t cooking-assistant .
+docker rm my-cooking-app
+docker run -d -p 3000:3000 --name my-cooking-app cooking-assistant
+
 cd packages/proto
 cd packages/server
 npm run start --workspace=proto

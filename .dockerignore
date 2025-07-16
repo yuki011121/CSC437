@@ -1,0 +1,23 @@
+# Git and OS files
+.git
+.gitignore
+.DS_Store
+
+# Dependencies
+node_modules/
+packages/app/node_modules/
+packages/server/node_modules/
+
+# Build outputs
+dist/
+packages/app/dist/
+packages/server/dist/
+
+# Logs and environment files
+*.log
+nohup.out
+.env
+packages/server/.env
+
+# npm debug files
+npm-debug.log*

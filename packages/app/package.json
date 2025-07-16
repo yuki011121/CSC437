@@ -13,6 +13,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "server": "file:../server"
+    "@calpoly/mustang": "file:../../vendor/calpoly-mustang-1.0.15.tgz",
+    "lit": "^3.1.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
   }
 }

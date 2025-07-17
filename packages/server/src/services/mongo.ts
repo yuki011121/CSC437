@@ -1,28 +1,19 @@
-// src/services/mongo.ts
+// src/services/mongo.ts (New Version)
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
-mongoose.set("debug", true);
 dotenv.config();
 
-function getMongoURI(dbname: string) {
-  let connection_string = `mongodb://localhost:27017/${dbname}`;
-  const { MONGO_USER, MONGO_PWD, MONGO_CLUSTER } = process.env;
-
-  if (MONGO_USER && MONGO_PWD && MONGO_CLUSTER) {
-    console.log(
-      "Connecting to MongoDB at",
-      `mongodb+srv://${MONGO_USER}:<password>@${MONGO_CLUSTER}/${dbname}`
-    );
-    connection_string = `mongodb+srv://${MONGO_USER}:${MONGO_PWD}@${MONGO_CLUSTER}/${dbname}?retryWrites=true&w=majority`;
-  } else {
-    console.log("Connecting to MongoDB at ", connection_string);
+export function connect() {
+  const connectionString = process.env.MONGO_URI;
+  if (!connectionString) {
+    console.error("Fatal: MONGO_URI environment variable is not set.");
+    // process.exit(1); 
+    return;
   }
-  return connection_string;
-}
 
-export function connect(dbname: string) {
+  console.log("Attempting to connect to the provided MongoDB URI...");
   mongoose
-    .connect(getMongoURI(dbname))
-    .catch((error) => console.log(error));
+    .connect(connectionString)
+    .then(() => console.log("Successfully connected to MongoDB!"))
+    .catch((error) => console.error("MongoDB connection error:", error));
 }

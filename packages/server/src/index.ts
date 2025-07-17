@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use(express.static(absoluteStaticDir));
 
-connect("csc437cluster");
+connect();
 
 app.use("/auth", authRouter);
 app.use("/api/history", authenticateUser, historyItemRoutes);

@@ -4,10 +4,23 @@ import { Msg } from "./messages";
 import { Model, Recipe } from "./model.js"; 
 import { HistoryItem } from "server/models"; 
 
+// async function loadSingleRecipe(id: string, user: Auth.User): Promise<any> {
+//   if (!user.authenticated) throw new Error("User not authenticated.");
+//   console.log(`UPDATE: loadSingleRecipe - Fetching /api/recipes/${id}`); 
+//   const response = await fetch(`/api/recipes/${id}`, { headers: Auth.headers(user) }); 
+//   if (!response.ok) {
+//     throw new Error(`Failed to fetch recipe ${id}: Server responded with ${response.status}`);
+//   }
+//   return response.json();
+// }
 async function loadSingleRecipe(id: string, user: Auth.User): Promise<any> {
-  if (!user.authenticated) throw new Error("User not authenticated.");
-  console.log(`UPDATE: loadSingleRecipe - Fetching /api/recipes/${id}`); 
-  const response = await fetch(`/api/recipes/${id}`, { headers: Auth.headers(user) }); 
+  console.log(`UPDATE: loadSingleRecipe - Fetching /api/recipes/${id}`);
+  
+  // We remove the "if (!user.authenticated)" check.
+  // Auth.headers(user) will correctly add the token for logged-in users,
+  // and will be empty for guests.
+  const response = await fetch(`/api/recipes/${id}`, { headers: Auth.headers(user) });
+
   if (!response.ok) {
     throw new Error(`Failed to fetch recipe ${id}: Server responded with ${response.status}`);
   }
@@ -92,34 +105,37 @@ export default function update(
   console.log("UPDATE function received message:", message[0], "with payload:", message[1]);
 
   switch (message[0]) {
+
     case "history/load":
-      if (!user.authenticated) {
+      // For logged-in users, fetch from the server
+      if (user.authenticated) {
+        apply(model => ({ ...model, isLoadingHistory: true, historyError: undefined }));
+        fetchHistory(user)
+          .then((items) => {
+            apply(model => ({
+              ...model,
+              historyItems: items,
+              isLoadingHistory: false
+            }));
+          })
+          .catch((err: Error) => {
+            apply(model => ({
+              ...model,
+              historyError: err.message,
+              isLoadingHistory: false
+            }));
+          });
+      } else {
+        // For guests, load from sessionStorage
+        console.log("Guest mode: loading history from sessionStorage");
+        const guestHistory = JSON.parse(sessionStorage.getItem("guest_history") || "[]");
         apply(model => ({
           ...model,
-          historyError: "User not authenticated. Cannot load history.",
-          isLoadingHistory: false,
-          historyItems: [] 
+          historyItems: guestHistory,
+          isLoadingHistory: false
         }));
-        break;
       }
-      apply(model => ({ ...model, isLoadingHistory: true, historyError: undefined, historyItems: [] }));
-      fetchHistory(user)
-        .then((items) => {
-          apply(model => ({
-            ...model,
-            historyItems: items,
-            isLoadingHistory: false
-          }));
-        })
-        .catch((err: Error) => {
-          apply(model => ({
-            ...model,
-            historyError: err.message,
-            isLoadingHistory: false
-          }));
-        });
       break;
-
     case "historyItem/fetchOne":
       const { id: idToFetch } = message[1];
       if (!user.authenticated) {
@@ -207,13 +223,9 @@ export default function update(
     case "recipe/generate":
       const { ingredients } = message[1];
 
-      if (!user.authenticated) {
-        apply(model => ({ ...model, recipeGenerationError: "Please sign in to generate a recipe." }));
-        break;
-      }
       if (!ingredients || ingredients.length === 0) {
-         apply(model => ({ ...model, recipeGenerationError: "Please enter at least one ingredient." }));
-         break;
+        apply(model => ({ ...model, recipeGenerationError: "Please enter at least one ingredient." }));
+        break;
       }
 
       apply(model => ({ 
@@ -223,15 +235,24 @@ export default function update(
         generatedRecipe: undefined 
       }));
 
+      // For both guests and users, we generate the recipe.
+      // The only difference is whether we send the auth header.
       fetch("/api/recipes/generate", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",  
+          "Content-Type": "application/json",
+          // Auth.headers adds the token if the user is authenticated,
+          // otherwise it returns empty headers, which is perfect for guests.
           ...Auth.headers(user)
         },
         body: JSON.stringify({ ingredients })
       })
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(`API Error: ${res.statusText}`)))
+      .then(res => {
+        if (!res.ok) {
+          return res.text().then(text => Promise.reject(new Error(`API Error: ${text || res.statusText}`)));
+        }
+        return res.json();
+      })
       .then((recipeData: Recipe) => {
         apply(model => ({
           ...model,
@@ -239,14 +260,30 @@ export default function update(
           generatedRecipe: recipeData
         }));
 
-        return fetchHistory(user); 
-      })
-      .then((historyItems) => {
-        apply(model => ({
-          ...model,
-          historyItems: historyItems,
-          isLoadingHistory: false 
-        }));
+        // After generating, decide where to save the history
+        if (user.authenticated) {
+          // Logged-in user: refresh history from the server
+          return fetchHistory(user).then((historyItems) => {
+            apply(model => ({ ...model, historyItems: historyItems }));
+          });
+        } else {
+          // Guest: save a correctly structured history item to sessionStorage
+          console.log("Guest mode: saving new, correctly structured recipe to sessionStorage");
+          const guestHistory = JSON.parse(sessionStorage.getItem("guest_history") || "[]");
+          
+          // Create an object that matches the structure of a real HistoryItem
+          const newGuestItem = {
+            _id: `guest_${recipeData._id || Date.now()}`,
+            text: ingredients.join(", "), // The text should be the ingredients list
+            link: `/app/recipe/${recipeData._id}`, // The link to the new recipe detail page
+            createdAt: new Date().toISOString()
+          };
+
+          guestHistory.unshift(newGuestItem);
+          sessionStorage.setItem("guest_history", JSON.stringify(guestHistory));
+          apply(model => ({ ...model, historyItems: guestHistory }));
+        }
+
       })
       .catch((err: Error) => {
         apply(model => ({
@@ -256,6 +293,7 @@ export default function update(
         }));
       });
       break;
+
     case "recipe/fetchById":
       const { id } = message[1];
           apply(model => ({ ...model, isLoadingRecipe: true, recipeError: undefined, currentRecipe: undefined }));

@@ -93,5 +93,29 @@ export function authenticateUser(
   });
 }
 
+export function tryAuthenticateUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    // No token? No problem for guests. Just move on.
+    return next();
+  }
+
+  jwt.verify(token, TOKEN_SECRET, (error, decoded) => {
+    if (error) {
+      // Token is present but invalid. This is an error.
+      return res.status(403).send({ message: "Forbidden: Invalid or expired token." });
+    }
+    // Token is valid, attach user info to the request and move on.
+    (req as any).user = decoded;
+    next();
+  });
+}
 
 export default router; // Export the router for now
+

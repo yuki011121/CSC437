@@ -1,7 +1,8 @@
 // packages/server/src/routes/recipeRoutes.ts
 import express, { Request, Response } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { authenticateUser } from "./auth";
+// import { authenticateUser } from "./auth";
+import { authenticateUser, tryAuthenticateUser } from "./auth";
 import RecipeService from "../services/recipe-svc";
 import HistoryService from "../services/historyItem-svc";
 
@@ -20,7 +21,7 @@ const GOOGLE_CX      = process.env.GOOGLE_SEARCH_CX!;
 // ------------------------------------------------------------------
 router.post(
   "/generate",
-  authenticateUser,                           
+  tryAuthenticateUser,                        
   (req: Request, res: Response) => {
     (async () => {
       const { ingredients } = req.body;
@@ -79,12 +80,22 @@ router.post(
       const savedRecipe = await RecipeService.create(recipeData);
       console.log("BACKEND: 6. Recipe saved successfully! ID:", savedRecipe._id);
 
-      await HistoryService.create({
-        userId: user.username,
-        text: ingredients.join(", "),
-        link: `/app/recipe/${savedRecipe._id}`
-      });
-      console.log("BACKEND: 7. History item saved successfully!");
+      // await HistoryService.create({
+      //   userId: user.username,
+      //   text: ingredients.join(", "),
+      //   link: `/app/recipe/${savedRecipe._id}`
+      // });
+      // console.log("BACKEND: 7. History item saved successfully!");
+      if (user && user.username) {
+        await HistoryService.create({
+          userId: user.username,
+          text: ingredients.join(", "),
+          link: `/app/recipe/${savedRecipe._id}`
+        });
+        console.log("BACKEND: 7.History item saved for user:", user.username);
+      } else {
+        console.log("BACKEND: 7. Guest generated a recipe. No history saved.");
+      }
 
       res.status(200).json(savedRecipe);
 
@@ -95,7 +106,7 @@ router.post(
   }
 );
 
-router.get("/:id", authenticateUser, async (req: Request, res: Response) => {
+router.get("/:id", tryAuthenticateUser, async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const recipe = await RecipeService.get(id);

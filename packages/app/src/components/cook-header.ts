@@ -58,7 +58,9 @@ export class CookHeaderElement extends LitElement {
       <button
         class="auth-button"
         @click=${(e: Event) => {
+          e.preventDefault();
           Events.relay(e, "auth:message", ["auth/signout"]);
+          window.location.href = "/app";
         }}
       >
         Sign Out
@@ -83,7 +85,10 @@ export class CookHeaderElement extends LitElement {
                   <span class="user-greeting">Hello, ${this._userid || "User"}</span>
                   ${this._renderSignOutButton()}
                 `
-              : this._renderSignInButton()}
+              : html`
+                  <span class="user-greeting">Welcome, Guest</span>
+                  ${this._renderSignInButton()}
+                `}
           </div>
           <label class="toggle-switch">
             <input

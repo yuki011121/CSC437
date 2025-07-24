@@ -23,7 +23,8 @@ connect();
 
 app.use("/auth", authRouter);
 app.use("/api/history", authenticateUser, historyItemRoutes);
-app.use("/api/recipes", authenticateUser, recipeRoutes);
+// app.use("/api/recipes", authenticateUser, recipeRoutes);
+app.use("/api/recipes", recipeRoutes);
 
 app.get("/hello", (req: Request, res: Response) => {
     res.send("Hello, World");

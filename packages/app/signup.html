@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Sign Up - Culinary Companion</title>
+  <link rel="stylesheet" href="/styles/reset.css">
+  <link rel="stylesheet" href="/styles/page.css">
+  <script type="module">
+    // 引入和 login.html 一样的 Auth.Provider
+    import { define, Auth } from "@calpoly/mustang";
+    import { SignupFormElement } from "/src/auth/signup-form.ts";
+
+    define({
+      // 定义 mu-auth，让它能监听到我们发出的事件
+      "mu-auth": Auth.Provider,
+      "signup-form": SignupFormElement
+    });
+  </script>
+</head>
+<body class="page">
+  <mu-auth>
+    <main class="card" style="max-width: 400px; margin: 40px auto; padding: 20px;">
+      <h2>Create a New Account</h2>
+
+      <signup-form>
+        <label>
+          <span>Username:</span>
+          <input name="username" autocomplete="off" />
+        </label>
+        <label>
+          <span>Password:</span>
+          <input type="password" name="password" />
+        </label>
+      </signup-form>
+
+      <p style="text-align: center; margin-top: 20px;">
+        Already have an account?
+        <a href="/login.html">Log In</a>
+      </p>
+    </main>
+  </mu-auth>
+</body>
+</html>

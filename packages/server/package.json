@@ -8,11 +8,11 @@
     }
   },
   "scripts": {
-    "dev": "nodemon",
+    "dev": "dotenv -- nodemon",
     "build": "npx etsc",
     "start": "npm run build && npm run start:node",
     "start:app": "cross-env STATIC=../app/dist npm run start",
-    "start:node": "node dist/index.js",
+    "start:node": "dotenv -- node dist/index.js",
     "start:proto": "cross-env STATIC=../proto/public npm run start",
     "check": "tsc --noEmit"
   },
@@ -26,6 +26,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.17",
     "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.4.2",
     "esbuild": "^0.25.4",
     "esbuild-node-tsc": "^2.0.5",
     "nodemon": "^3.1.10",

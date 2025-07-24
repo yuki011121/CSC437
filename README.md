@@ -1,4 +1,5 @@
 # CSC437
+tree -L 2
 docker build -t cooking-assistant .
 docker rm my-cooking-app
 docker run -d -p 3000:3000 --name my-cooking-app cooking-assistant

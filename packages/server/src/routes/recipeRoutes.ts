@@ -15,7 +15,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 // --- Google Search init ---
 const GOOGLE_API_KEY = process.env.GOOGLE_SEARCH_API_KEY!;
 const GOOGLE_CX      = process.env.GOOGLE_SEARCH_CX!;
-
+const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
 // ------------------------------------------------------------------
 // POST /api/recipes/generate
 // ------------------------------------------------------------------
@@ -52,40 +52,55 @@ router.post(
       const recipeData = JSON.parse(cleanedText);
       console.log("BACKEND: 2. Received recipe data from Gemini:", recipeData);
 
+      let imageUrl = "";
+      const query = encodeURIComponent(`${recipeData.name} food photo`);
 
-      let imageUrl = ""; 
-      if (GOOGLE_API_KEY && GOOGLE_CX && recipeData.name) {
-        const q   = encodeURIComponent(`${recipeData.name} food photo`);
-        const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&q=${q}&searchType=image&num=5`;
-
-        const r = await fetch(url);
-        if (r.ok) {
-          const data = await r.json();
-          const candidate = data.items?.find(
-            (it: any) =>
-              it.mime?.startsWith("image/") &&
-              !/fbsbx\.com|googleusercontent\.com/.test(it.link)  
-          );
-          if (candidate) imageUrl = candidate.link;
+      // 1. Try Google Custom Search
+      if (GOOGLE_API_KEY && GOOGLE_CX) {
+        try {
+          const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&q=${query}&searchType=image&num=5`;
+          const r = await fetch(url);
+          if (r.ok) {
+            const data = await r.json();
+            const candidate = data.items?.find(
+              (it: any) => it.mime?.startsWith("image/") && !/fbsbx\.com|googleusercontent\.com/.test(it.link)
+            );
+            if (candidate) imageUrl = candidate.link.replace(/^http:/, 'https');
+          }
+        } catch (e) {
+          console.warn("Google Search API failed:", e);
         }
       }
 
-      if (!imageUrl && recipeData.name) {
-        const q = encodeURIComponent(recipeData.name);
-        imageUrl = `https://source.unsplash.com/800x600/?${q},food`;
+      // 2. If Google fails, try Unsplash API (requires UNSPLASH_API_KEY in secrets)
+      if (!imageUrl && process.env.UNSPLASH_API_KEY) {
+        try {
+          const url = `https://api.unsplash.com/search/photos?query=${query}&per_page=1&client_id=${process.env.UNSPLASH_API_KEY}`;
+          const r = await fetch(url);
+          if (r.ok) {
+            const data = await r.json();
+            if (data.results && data.results.length > 0) {
+              imageUrl = data.results[0].urls.regular;
+            }
+          }
+        } catch (e) {
+          console.warn("Unsplash API failed:", e);
+        }
       }
-      recipeData.imageUrl = imageUrl; 
+
+      // 3. If all else fails, use a placeholder
+      if (!imageUrl) {
+        console.warn("All image sources failed, falling back to placeholder.");
+        const placeholderText = encodeURIComponent(recipeData.name);
+        imageUrl = `https://placehold.co/800x600/EFEFEF/AAAAAA?text=${placeholderText}`;
+      }
+      
+      recipeData.imageUrl = imageUrl;
 
       console.log("BACKEND: 5. Attempting to save recipe to 'recipes' collection...");
       const savedRecipe = await RecipeService.create(recipeData);
       console.log("BACKEND: 6. Recipe saved successfully! ID:", savedRecipe._id);
 
-      // await HistoryService.create({
-      //   userId: user.username,
-      //   text: ingredients.join(", "),
-      //   link: `/app/recipe/${savedRecipe._id}`
-      // });
-      // console.log("BACKEND: 7. History item saved successfully!");
       if (user && user.username) {
         await HistoryService.create({
           userId: user.username,
@@ -98,6 +113,51 @@ router.post(
       }
 
       res.status(200).json(savedRecipe);
+      // let imageUrl = ""; 
+      // if (GOOGLE_API_KEY && GOOGLE_CX && recipeData.name) {
+      //   const q   = encodeURIComponent(`${recipeData.name} food photo`);
+      //   const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&q=${q}&searchType=image&num=5`;
+
+      //   const r = await fetch(url);
+      //   if (r.ok) {
+      //     const data = await r.json();
+      //     const candidate = data.items?.find(
+      //       (it: any) =>
+      //         it.mime?.startsWith("image/") &&
+      //         !/fbsbx\.com|googleusercontent\.com/.test(it.link)  
+      //     );
+      //     if (candidate) imageUrl = candidate.link;
+      //   }
+      // }
+
+      // if (!imageUrl && recipeData.name) {
+      //   const q = encodeURIComponent(recipeData.name);
+      //   imageUrl = `https://source.unsplash.com/800x600/?${q},food`;
+      // }
+      // recipeData.imageUrl = imageUrl; 
+
+      // console.log("BACKEND: 5. Attempting to save recipe to 'recipes' collection...");
+      // const savedRecipe = await RecipeService.create(recipeData);
+      // console.log("BACKEND: 6. Recipe saved successfully! ID:", savedRecipe._id);
+
+      // // await HistoryService.create({
+      // //   userId: user.username,
+      // //   text: ingredients.join(", "),
+      // //   link: `/app/recipe/${savedRecipe._id}`
+      // // });
+      // // console.log("BACKEND: 7. History item saved successfully!");
+      // if (user && user.username) {
+      //   await HistoryService.create({
+      //     userId: user.username,
+      //     text: ingredients.join(", "),
+      //     link: `/app/recipe/${savedRecipe._id}`
+      //   });
+      //   console.log("BACKEND: 7.History item saved for user:", user.username);
+      // } else {
+      //   console.log("BACKEND: 7. Guest generated a recipe. No history saved.");
+      // }
+
+      // res.status(200).json(savedRecipe);
 
     })().catch((error) => {
       console.error("BACKEND: ERROR during recipe generation flow:", error);
